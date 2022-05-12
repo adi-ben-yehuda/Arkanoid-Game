@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2022-04-08
  */
 public class Block extends Rectangle implements Collidable, Sprite, HitNotifier {
-    List<HitListener> hitListeners;
+    private List<HitListener> hitListeners;
 
     /**
      * The function constructs a new block with location and width/height.
@@ -64,12 +64,26 @@ public class Block extends Rectangle implements Collidable, Sprite, HitNotifier 
      * @param hitter
      */
     private void notifyHit(Ball hitter) {
-        // Make a copy of the hitListeners before iterating over them.
-        List<HitListener> listeners = new ArrayList<>(this.hitListeners);
+        int xOfBottomBlock = 0, yOfBottomBlock = 580;
+        List<HitListener> listeners;
 
-        // Notify all listeners about a hit event:
-        for (HitListener hl : listeners) {
-            hl.hitEvent(this, hitter);
+        /* That is, the hit is in the bottom block so the ball must be taken
+         out of the game. */
+        if (this.getUpperLeft().getX() == xOfBottomBlock
+                && this.getUpperLeft().getY() == yOfBottomBlock) {
+            // Make a copy of the hitListeners before iterating over them.
+            listeners = new ArrayList<>(hitter.getHitListeners());
+            for (HitListener hl : listeners) {
+                hl.hitEvent(this, hitter);
+            }
+        } else {
+            // Make a copy of the hitListeners before iterating over them.
+            listeners = new ArrayList<>(this.hitListeners);
+            // Notify all listeners about a hit event:
+            for (HitListener hl : listeners) {
+
+                hl.hitEvent(this, hitter);
+            }
         }
     }
 

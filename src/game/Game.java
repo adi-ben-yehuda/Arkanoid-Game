@@ -23,7 +23,8 @@ public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
-    private Counter counter;
+    private Counter availableBlocks;
+    private Counter availableBalls;
 
     /**
      * The function constructs a new game.
@@ -32,7 +33,8 @@ public class Game {
      */
     public Game(GUI gui) {
         this.gui = gui;
-        this.counter = new Counter();
+        this.availableBlocks = new Counter();
+        this.availableBalls = new Counter();
     }
 
     /**
@@ -82,6 +84,28 @@ public class Game {
         for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
             blocks.add(new Block(new Point(startX - i, yOfPoint),
                     blockWidth, blockHeight, Color.GRAY));
+        }
+    }
+
+    /**
+     * The function creates balls and adds them to the list of balls.
+     *
+     * @param balls
+     */
+    private void defineBalls(ArrayList<Ball> balls) {
+        int xBall = 600, yBall = 450, radius = 10, ballVelocity = 5;
+
+        // Create new balls.
+        balls.add(new Ball(xBall, yBall, radius, Color.GREEN));
+        balls.add(new Ball(xBall / 2, yBall / 2, radius, Color.blue));
+        balls.add(new Ball(xBall / 3, yBall / 3, radius, Color.pink));
+
+        // Add the balls to the game.
+        for (int i = 0; i < 3; i++) {
+            balls.get(i).setVelocity(ballVelocity, ballVelocity);
+            balls.get(i).setGameEnvironment(this.environment);
+            balls.get(i).addToGame(this);
+            this.availableBalls.increase(1);
         }
     }
 
@@ -141,32 +165,40 @@ public class Game {
      * Paddle and add them to the game.
      */
     public void initialize() {
-        int xOfFirstBall = 600, yOfFirstBall = 450, radius = 10,
-                xOfSecondBall = 100, yOfSecondBall = 150, ballVelocity = 5,
-                paddleWidth = 90, paddleHeight = 20;
+        int paddleWidth = 140, paddleHeight = 20;
         ArrayList<Block> blocks = new ArrayList<>();
+        ArrayList<Ball> balls = new ArrayList<>();
         PrintingHitListener printingHitListener = new PrintingHitListener();
+        BlockRemover blockRemover;
+        BallRemover ballRemover;
 
         defineBlocks(blocks);
         for (Block block : blocks) {
             block.addHitListener(printingHitListener);
-            this.counter.increase(1);
+            this.availableBlocks.increase(1);
         }
 
-        BlockRemover blockRemover = new BlockRemover(this, counter);
+        Block deathRegion = new Block(new Point(0,
+                gui.getDrawSurface().getHeight() - paddleHeight),
+                gui.getDrawSurface().getWidth(), paddleHeight);
+        blocks.add(deathRegion);
+        this.availableBlocks.increase(1);
+
+        blockRemover = new BlockRemover(this, availableBlocks);
         for (Block block : blocks) {
             block.addHitListener(blockRemover);
         }
 
         // Define the borders of the page.
+
+        // Right block
         blocks.add(new Block(new Point(
                 gui.getDrawSurface().getWidth() - paddleHeight, 0),
                 paddleHeight, gui.getDrawSurface().getHeight(), Color.BLACK));
+        // Upper block
         blocks.add(new Block(new Point(0, 0),
                 gui.getDrawSurface().getWidth(), paddleHeight, Color.BLACK));
-        blocks.add(new Block(new Point(0,
-                gui.getDrawSurface().getHeight() - paddleHeight),
-                gui.getDrawSurface().getWidth(), paddleHeight, Color.BLACK));
+        // Left block
         blocks.add(new Block(new Point(0, 0), paddleHeight,
                 gui.getDrawSurface().getHeight(),
                 Color.BLACK));
@@ -176,18 +208,11 @@ public class Game {
             block.addToGame(this);
         }
 
-        // Create a new ball and add it to the game.
-        Ball ball = new Ball(xOfFirstBall, yOfFirstBall, radius, Color.GREEN);
-        ball.setVelocity(ballVelocity, ballVelocity);
-        ball.setGameEnvironment(this.environment);
-        ball.addToGame(this);
-
-        // Create a new ball and add it to the game.
-        Ball secondBall = new Ball(xOfSecondBall, yOfSecondBall, radius,
-                Color.blue);
-        secondBall.setVelocity(ballVelocity, ballVelocity);
-        secondBall.setGameEnvironment(this.environment);
-        secondBall.addToGame(this);
+        defineBalls(balls);
+        ballRemover = new BallRemover(this, availableBalls);
+        for (Ball ball : balls) {
+            ball.addHitListener(ballRemover);
+        }
 
         // Create a new paddle and add it to the game.
         Paddle paddle = new Paddle(gui.getKeyboardSensor(),
@@ -206,10 +231,12 @@ public class Game {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
 
-        while (this.counter.getValue() > 0) {
+        while (this.availableBlocks.getValue() > 0
+                && this.availableBalls.getValue() > 0) {
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = gui.getDrawSurface();
+
             this.sprites.drawAllOn(d);
             gui.show(d);
             this.sprites.notifyAllTimePassed();
