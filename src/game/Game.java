@@ -6,6 +6,7 @@ import biuoop.Sleeper;
 import collidable_and_sprites.Block;
 import collidable_and_sprites.Paddle;
 import collision_detection.Collidable;
+import different_sprites.ScoreIndicator;
 import geometry_primitives.Point;
 import different_sprites.Ball;
 import different_sprites.Sprite;
@@ -25,6 +26,7 @@ public class Game {
     private GUI gui;
     private Counter availableBlocks;
     private Counter availableBalls;
+    private Counter score;
 
     /**
      * The function constructs a new game.
@@ -35,6 +37,7 @@ public class Game {
         this.gui = gui;
         this.availableBlocks = new Counter();
         this.availableBalls = new Counter();
+        this.score = new Counter();
     }
 
     /**
@@ -93,7 +96,7 @@ public class Game {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int xBall = 600, yBall = 450, radius = 10, ballVelocity = 5;
+        int xBall = 300, yBall = 300, radius = 10, ballVelocity = 5;
 
         // Create new balls.
         balls.add(new Ball(xBall, yBall, radius, Color.GREEN));
@@ -165,16 +168,19 @@ public class Game {
      * Paddle and add them to the game.
      */
     public void initialize() {
-        int paddleWidth = 140, paddleHeight = 20;
+        int paddleWidth = 150, paddleHeight = 20;
         ArrayList<Block> blocks = new ArrayList<>();
         ArrayList<Ball> balls = new ArrayList<>();
         PrintingHitListener printingHitListener = new PrintingHitListener();
         BlockRemover blockRemover;
         BallRemover ballRemover;
+        ScoreTrackingListener scoreTrackingListener = new
+                ScoreTrackingListener(this.score);
 
         defineBlocks(blocks);
         for (Block block : blocks) {
             block.addHitListener(printingHitListener);
+            block.addHitListener(scoreTrackingListener);
             this.availableBlocks.increase(1);
         }
 
@@ -193,13 +199,13 @@ public class Game {
 
         // Right block
         blocks.add(new Block(new Point(
-                gui.getDrawSurface().getWidth() - paddleHeight, 0),
+                gui.getDrawSurface().getWidth() - paddleHeight, 25),
                 paddleHeight, gui.getDrawSurface().getHeight(), Color.BLACK));
         // Upper block
-        blocks.add(new Block(new Point(0, 0),
+        blocks.add(new Block(new Point(0, 25),
                 gui.getDrawSurface().getWidth(), paddleHeight, Color.BLACK));
         // Left block
-        blocks.add(new Block(new Point(0, 0), paddleHeight,
+        blocks.add(new Block(new Point(0, 25), paddleHeight,
                 gui.getDrawSurface().getHeight(),
                 Color.BLACK));
 
@@ -221,6 +227,9 @@ public class Game {
                         - paddleHeight * 2), paddleWidth, paddleHeight, gui,
                 Color.CYAN);
         paddle.addToGame(this);
+
+        ScoreIndicator scoreIndicator = new ScoreIndicator(score);
+        this.sprites.addSprite(scoreIndicator);
     }
 
     /**

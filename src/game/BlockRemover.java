@@ -45,5 +45,6 @@ public class BlockRemover implements HitListener {
 
         // Decrease the number of blocks.
         this.remainingBlocks.decrease(1);
+
     }
 }
