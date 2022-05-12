@@ -10,6 +10,7 @@ import geometry_primitives.Point;
 import different_sprites.Ball;
 import different_sprites.Sprite;
 import different_sprites.SpriteCollection;
+import tests.PrintingHitListener;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
+    private Counter counter;
 
     /**
      * The function constructs a new game.
@@ -30,6 +32,7 @@ public class Game {
      */
     public Game(GUI gui) {
         this.gui = gui;
+        this.counter = new Counter();
     }
 
     /**
@@ -107,6 +110,24 @@ public class Game {
     }
 
     /**
+     * The function removes the sprite from the list.
+     *
+     * @param s
+     */
+    public void removeSprite(Sprite s) {
+        this.sprites.removeSprite(s);
+    }
+
+    /**
+     * The function removes the Collidable from the list.
+     *
+     * @param c
+     */
+    public void removeCollidable(Collidable c) {
+        this.environment.removeCollidable(c);
+    }
+
+    /**
      * The function returns the environment.
      *
      * @return the environment.
@@ -116,16 +137,26 @@ public class Game {
     }
 
     /**
-     * The function initializes a new game: create the Blocks and sprites.Ball
-     * (and collidable_and_sprites.Paddle) and add them to the game.
+     * The function initializes a new game: create the Blocks, Balls, and
+     * Paddle and add them to the game.
      */
     public void initialize() {
         int xOfFirstBall = 600, yOfFirstBall = 450, radius = 10,
                 xOfSecondBall = 100, yOfSecondBall = 150, ballVelocity = 5,
                 paddleWidth = 90, paddleHeight = 20;
         ArrayList<Block> blocks = new ArrayList<>();
+        PrintingHitListener printingHitListener = new PrintingHitListener();
 
         defineBlocks(blocks);
+        for (Block block : blocks) {
+            block.addHitListener(printingHitListener);
+            this.counter.increase(1);
+        }
+
+        BlockRemover blockRemover = new BlockRemover(this, counter);
+        for (Block block : blocks) {
+            block.addHitListener(blockRemover);
+        }
 
         // Define the borders of the page.
         blocks.add(new Block(new Point(
@@ -175,7 +206,7 @@ public class Game {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
 
-        while (true) {
+        while (this.counter.getValue() > 0) {
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = gui.getDrawSurface();
@@ -190,5 +221,7 @@ public class Game {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
         }
+
+        gui.close();
     }
 }

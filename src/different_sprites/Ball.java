@@ -211,8 +211,8 @@ public class Ball implements Sprite {
 
             /* Notify the hit object (using its hit() method) that a collision
              occurred. */
-            velocity = collisionInfo.collisionObject().hit(collisionInfo.
-                    collisionPoint(), this.velocity);
+            velocity = collisionInfo.collisionObject().hit(this,
+                    collisionInfo.collisionPoint(), this.velocity);
 
             /* Update the velocity to the new velocity returned by the hit()
              method. */
