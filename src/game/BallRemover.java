@@ -41,7 +41,6 @@ public class BallRemover implements HitListener {
 
         // Remove from the game the ball that hit the bottom block.
         hitter.removeFromGame(game);
-        game.removeSprite(hitter);
 
         // Decrease the number of balls.
         this.remainingBalls.decrease(1);

@@ -40,11 +40,13 @@ public class BlockRemover implements HitListener {
 
         // Remove from the game the block that are hit.
         beingHit.removeFromGame(game);
-        game.removeCollidable(beingHit);
-        game.removeSprite(beingHit);
 
         // Decrease the number of blocks.
         this.remainingBlocks.decrease(1);
 
+        // When there are no more blocks in the game, add 95 points to the score.
+        if (this.remainingBlocks.getValue() == 0) {
+            this.game.setScore(95);
+        }
     }
 }

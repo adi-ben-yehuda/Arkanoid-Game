@@ -96,7 +96,7 @@ public class Game {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int xBall = 300, yBall = 300, radius = 10, ballVelocity = 5;
+        int xBall = 300, yBall = 200, radius = 10, ballVelocity = 5;
 
         // Create new balls.
         balls.add(new Ball(xBall, yBall, radius, Color.GREEN));
@@ -110,6 +110,15 @@ public class Game {
             balls.get(i).addToGame(this);
             this.availableBalls.increase(1);
         }
+    }
+
+    /**
+     * The function adds the number to the score.
+     *
+     * @param number
+     */
+    public void setScore(int number) {
+        this.score.increase(number);
     }
 
     /**
@@ -188,7 +197,6 @@ public class Game {
                 gui.getDrawSurface().getHeight() - paddleHeight),
                 gui.getDrawSurface().getWidth(), paddleHeight);
         blocks.add(deathRegion);
-        this.availableBlocks.increase(1);
 
         blockRemover = new BlockRemover(this, availableBlocks);
         for (Block block : blocks) {
@@ -240,8 +248,8 @@ public class Game {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
 
-        while (this.availableBlocks.getValue() > 0
-                && this.availableBalls.getValue() > 0) {
+        while (this.availableBalls.getValue() > 0 &&
+                this.availableBlocks.getValue() > 0) {
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = gui.getDrawSurface();
@@ -257,6 +265,21 @@ public class Game {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
         }
+
+        DrawSurface d = gui.getDrawSurface();
+        this.sprites.drawAllOn(d);
+        gui.show(d);
+        d = gui.getDrawSurface();
+
+        if (this.availableBlocks.getValue() == 0) {
+            d.drawText(280, 250, "YOU WIN!", 50);
+            d.drawText(230, 320, "Your score is: " + score.getValue(), 50);
+        } else if (this.availableBalls.getValue() == 0) {
+            d.drawText(180, 250, "THE GAME IS OVER!", 50);
+            d.drawText(230, 320, "Your score is: " + score.getValue(), 50);
+        }
+        gui.show(d);
+        sleeper.sleepFor(1500);
 
         gui.close();
     }

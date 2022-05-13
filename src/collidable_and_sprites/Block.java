@@ -73,17 +73,14 @@ public class Block extends Rectangle implements Collidable, Sprite, HitNotifier 
                 && this.getUpperLeft().getY() == yOfBottomBlock) {
             // Make a copy of the hitListeners before iterating over them.
             listeners = new ArrayList<>(hitter.getHitListeners());
-            for (HitListener hl : listeners) {
-                hl.hitEvent(this, hitter);
-            }
         } else {
             // Make a copy of the hitListeners before iterating over them.
             listeners = new ArrayList<>(this.hitListeners);
-            // Notify all listeners about a hit event:
-            for (HitListener hl : listeners) {
+        }
 
-                hl.hitEvent(this, hitter);
-            }
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+            hl.hitEvent(this, hitter);
         }
     }
 

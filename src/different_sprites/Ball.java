@@ -256,6 +256,11 @@ public class Ball implements Sprite, HitNotifier {
         hitListeners.remove(hl);
     }
 
+    /**
+     * The function removes the ball from the game.
+     *
+     * @param g
+     */
     public void removeFromGame(Game g) {
         g.removeSprite(this);
     }
