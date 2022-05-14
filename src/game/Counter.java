@@ -5,7 +5,7 @@ package game;
  * @since 2022-05-12
  */
 public class Counter {
-    int counter;
+    private int counter;
 
     /**
      * The function constructs a new counter object.

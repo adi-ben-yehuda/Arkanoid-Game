@@ -96,7 +96,7 @@ public class Game {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int xBall = 300, yBall = 200, radius = 10, ballVelocity = 5;
+        int xBall = 100, yBall = 200, radius = 10, ballVelocity = 5;
 
         // Create new balls.
         balls.add(new Ball(xBall, yBall, radius, Color.GREEN));
@@ -177,7 +177,7 @@ public class Game {
      * Paddle and add them to the game.
      */
     public void initialize() {
-        int paddleWidth = 150, paddleHeight = 20;
+        int paddleWidth = 150, paddleHeight = 20, yBlock = 25;
         ArrayList<Block> blocks = new ArrayList<>();
         ArrayList<Ball> balls = new ArrayList<>();
         PrintingHitListener printingHitListener = new PrintingHitListener();
@@ -207,13 +207,13 @@ public class Game {
 
         // Right block
         blocks.add(new Block(new Point(
-                gui.getDrawSurface().getWidth() - paddleHeight, 25),
+                gui.getDrawSurface().getWidth() - paddleHeight, yBlock),
                 paddleHeight, gui.getDrawSurface().getHeight(), Color.BLACK));
         // Upper block
-        blocks.add(new Block(new Point(0, 25),
+        blocks.add(new Block(new Point(0, yBlock),
                 gui.getDrawSurface().getWidth(), paddleHeight, Color.BLACK));
         // Left block
-        blocks.add(new Block(new Point(0, 25), paddleHeight,
+        blocks.add(new Block(new Point(0, yBlock), paddleHeight,
                 gui.getDrawSurface().getHeight(),
                 Color.BLACK));
 
@@ -244,12 +244,16 @@ public class Game {
      * The function runs the game.
      */
     public void run() {
-        Sleeper sleeper = new Sleeper();
-        int framesPerSecond = 60;
+        int xWin = 280, xLose = 180, yMss = 250, textSize = 50, xScore = 230,
+                yScore = 320, framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
+        String winText = "YOU WIN", scoreText = "Your score is:",
+                loseText = "THE GAME IS OVER";
 
-        while (this.availableBalls.getValue() > 0 &&
-                this.availableBlocks.getValue() > 0) {
+        Sleeper sleeper = new Sleeper();
+
+        while (this.availableBalls.getValue() > 0
+                && this.availableBlocks.getValue() > 0) {
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = gui.getDrawSurface();
@@ -271,16 +275,20 @@ public class Game {
         gui.show(d);
         d = gui.getDrawSurface();
 
+        scoreText += score.getValue();
+
+        // That is, the player won the game
         if (this.availableBlocks.getValue() == 0) {
-            d.drawText(280, 250, "YOU WIN!", 50);
-            d.drawText(230, 320, "Your score is: " + score.getValue(), 50);
+            d.drawText(xWin, yMss, winText, textSize);
+            d.drawText(xScore, yScore, scoreText, textSize);
         } else if (this.availableBalls.getValue() == 0) {
-            d.drawText(180, 250, "THE GAME IS OVER!", 50);
-            d.drawText(230, 320, "Your score is: " + score.getValue(), 50);
+            // That is, the player lost the game.
+            d.drawText(xLose, yMss, loseText, textSize);
+            d.drawText(xScore, yScore, scoreText, textSize);
         }
+
         gui.show(d);
         sleeper.sleepFor(1500);
-
         gui.close();
     }
 }
