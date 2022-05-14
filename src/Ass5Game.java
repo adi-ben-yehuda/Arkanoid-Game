@@ -1,5 +1,3 @@
-package tests;
-
 import game.Game;
 import biuoop.GUI;
 
@@ -7,7 +5,7 @@ import biuoop.GUI;
  * @author Adi Ben Yehuda 211769757
  * @since 2022-04-14
  */
-public class Ass3Game {
+public class Ass5Game {
 
     /**
      * The function creates a game object, initializes and runs it.

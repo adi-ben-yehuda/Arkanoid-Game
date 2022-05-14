@@ -2,19 +2,25 @@ package collidable_and_sprites;
 
 import biuoop.DrawSurface;
 import collision_detection.Collidable;
+import collision_detection.HitListener;
+import collision_detection.HitNotifier;
 import collision_detection.Velocity;
+import different_sprites.Ball;
 import game.Game;
 import geometry_primitives.Point;
 import geometry_primitives.Rectangle;
 import different_sprites.Sprite;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Adi Ben Yehuda 211769757
  * @since 2022-04-08
  */
-public class Block extends Rectangle implements Collidable, Sprite {
+public class Block extends Rectangle implements Collidable, Sprite, HitNotifier {
+    private List<HitListener> hitListeners;
 
     /**
      * The function constructs a new block with location and width/height.
@@ -25,6 +31,7 @@ public class Block extends Rectangle implements Collidable, Sprite {
      */
     public Block(Point upperLeft, double width, double height) {
         super(upperLeft, width, height);
+        this.hitListeners = new ArrayList<>();
     }
 
     /**
@@ -35,6 +42,7 @@ public class Block extends Rectangle implements Collidable, Sprite {
     public Block(Rectangle rectangle) {
         super(rectangle.getUpperLeft(), rectangle.getWidth(),
                 rectangle.getHeight());
+        this.hitListeners = new ArrayList<>();
     }
 
     /**
@@ -47,6 +55,42 @@ public class Block extends Rectangle implements Collidable, Sprite {
      */
     public Block(Point upperLeft, double width, double height, Color color) {
         super(upperLeft, width, height, color);
+        this.hitListeners = new ArrayList<>();
+    }
+
+    /**
+     * The function notifies all listeners about a hit event.
+     *
+     * @param hitter
+     */
+    private void notifyHit(Ball hitter) {
+        int xOfBottomBlock = 0, yOfBottomBlock = 580;
+        List<HitListener> listeners;
+
+        /* That is, the hit is in the bottom block so the ball must be taken
+         out of the game. */
+        if (this.getUpperLeft().getX() == xOfBottomBlock
+                && this.getUpperLeft().getY() == yOfBottomBlock) {
+            // Make a copy of the hitListeners before iterating over them.
+            listeners = new ArrayList<>(hitter.getHitListeners());
+        } else {
+            // Make a copy of the hitListeners before iterating over them.
+            listeners = new ArrayList<>(this.hitListeners);
+        }
+
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+            hl.hitEvent(this, hitter);
+        }
+    }
+
+    /**
+     * The function returns the hit listeners list.
+     *
+     * @return the hit listeners list.
+     */
+    public List<HitListener> getHitListeners() {
+        return this.hitListeners;
     }
 
     /**
@@ -56,7 +100,7 @@ public class Block extends Rectangle implements Collidable, Sprite {
      */
     @Override
     public Rectangle getCollisionRectangle() {
-        return (Rectangle) this;
+        return this;
     }
 
     /**
@@ -68,7 +112,7 @@ public class Block extends Rectangle implements Collidable, Sprite {
      * @return the new velocity expected after the hit
      */
     @Override
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         Velocity velocity = new Velocity(currentVelocity.getDx(),
                 currentVelocity.getDy());
 
@@ -90,6 +134,7 @@ public class Block extends Rectangle implements Collidable, Sprite {
             velocity.setDy((-1) * velocity.getDy());
         }
 
+        this.notifyHit(hitter);
         return velocity;
     }
 
@@ -111,11 +156,13 @@ public class Block extends Rectangle implements Collidable, Sprite {
                     (int) this.getUpperLeft().getY(), (int) this.getWidth(),
                     (int) this.getHeight());
         }
-     }
+    }
 
+    /**
+     * The function calls timePassed() on all sprites.
+     */
     @Override
     public void timePassed() {
-
     }
 
     /**
@@ -126,5 +173,35 @@ public class Block extends Rectangle implements Collidable, Sprite {
     public void addToGame(Game g) {
         g.addSprite(this);
         g.addCollidable(this);
+    }
+
+    /**
+     * The function removes the block from the game.
+     *
+     * @param game
+     */
+    public void removeFromGame(Game game) {
+        game.removeSprite(this);
+        game.removeCollidable(this);
+    }
+
+    /**
+     * The function adds the hit listener to the list.
+     *
+     * @param hl
+     */
+    @Override
+    public void addHitListener(HitListener hl) {
+        hitListeners.add(hl);
+    }
+
+    /**
+     * The function removes the hit listener from the list.
+     *
+     * @param hl
+     */
+    @Override
+    public void removeHitListener(HitListener hl) {
+        hitListeners.remove(hl);
     }
 }

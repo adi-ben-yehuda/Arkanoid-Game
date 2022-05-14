@@ -113,7 +113,6 @@ public class Paddle extends Block implements Sprite, Collidable {
      * @param currentVelocity
      * @return the new velocity expected after the hit
      */
-    @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         int numberOfRegions = 5, addToDegree = 30, circle = 360;
         int regionNumber = 0, angle = 300, currentAngle = 0;

@@ -2,6 +2,8 @@ package different_sprites;
 
 import biuoop.DrawSurface;
 import collision_detection.CollisionInfo;
+import collision_detection.HitListener;
+import collision_detection.HitNotifier;
 import collision_detection.Velocity;
 import game.Game;
 import game.GameEnvironment;
@@ -10,17 +12,20 @@ import geometry_primitives.Point;
 import geometry_primitives.Rectangle;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Adi Ben Yehuda 211769757
  * @since 2022-03-24
  */
-public class Ball implements Sprite {
+public class Ball implements Sprite, HitNotifier {
     private Point center;
     private int size;
     private Color color;
     private Velocity velocity;
     private GameEnvironment gameEnvironment;
+    private List<HitListener> hitListeners;
 
     /**
      * The function constructs a new ball-type object.
@@ -34,6 +39,7 @@ public class Ball implements Sprite {
         size = r;
         this.color = color;
         velocity = null;
+        this.hitListeners = new ArrayList<>();
     }
 
     /**
@@ -49,6 +55,7 @@ public class Ball implements Sprite {
         size = r;
         this.color = color;
         velocity = null;
+        this.hitListeners = new ArrayList<>();
     }
 
     /**
@@ -211,8 +218,8 @@ public class Ball implements Sprite {
 
             /* Notify the hit object (using its hit() method) that a collision
              occurred. */
-            velocity = collisionInfo.collisionObject().hit(collisionInfo.
-                    collisionPoint(), this.velocity);
+            velocity = collisionInfo.collisionObject().hit(this,
+                    collisionInfo.collisionPoint(), this.velocity);
 
             /* Update the velocity to the new velocity returned by the hit()
              method. */
@@ -227,5 +234,43 @@ public class Ball implements Sprite {
      */
     public void addToGame(Game g) {
         g.addSprite(this);
+    }
+
+    /**
+     * The function adds the hit listener to the list.
+     *
+     * @param hl
+     */
+    @Override
+    public void addHitListener(HitListener hl) {
+        hitListeners.add(hl);
+    }
+
+    /**
+     * The function removes the hit listener from the list.
+     *
+     * @param hl
+     */
+    @Override
+    public void removeHitListener(HitListener hl) {
+        hitListeners.remove(hl);
+    }
+
+    /**
+     * The function removes the ball from the game.
+     *
+     * @param g
+     */
+    public void removeFromGame(Game g) {
+        g.removeSprite(this);
+    }
+
+    /**
+     * The function returns the hit listeners list.
+     *
+     * @return the hit listeners list.
+     */
+    public List<HitListener> getHitListeners() {
+        return this.hitListeners;
     }
 }

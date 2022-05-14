@@ -1,5 +1,6 @@
 package collision_detection;
 
+import different_sprites.Ball;
 import geometry_primitives.Point;
 import geometry_primitives.Rectangle;
 
@@ -19,9 +20,10 @@ public interface Collidable {
      * The function checks which side of the block the collision point is on
      * and returns the new velocity according to it.
      *
+     * @param hitter
      * @param collisionPoint
      * @param currentVelocity
      * @return the new velocity expected after the hit
      */
-    Velocity hit(Point collisionPoint, Velocity currentVelocity);
+    Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity);
 }

@@ -29,6 +29,18 @@ public class GameEnvironment {
     }
 
     /**
+     * The function removes the object that can be collided, from the
+     * environment.
+     *
+     * @param c
+     */
+    public void removeCollidable(Collidable c) {
+        if (collectibleObjects != null) {
+            collectibleObjects.remove(c);
+        }
+    }
+
+    /**
      * The function checks if a ball moving on the line does not collide with
      * any of the objects in this collection. Otherwise, compute the closest
      * collision that is about to occur.
