@@ -1,8 +1,9 @@
 package game;
 
+import Animation.Animation;
 import biuoop.DrawSurface;
 import biuoop.GUI;
-import biuoop.Sleeper;
+import biuoop.KeyboardSensor;
 import collidable_and_sprites.Block;
 import collidable_and_sprites.Paddle;
 import collision_detection.Collidable;
@@ -11,7 +12,9 @@ import geometry_primitives.Point;
 import different_sprites.Ball;
 import different_sprites.Sprite;
 import different_sprites.SpriteCollection;
-import tests.PrintingHitListener;
+import Animation.AnimationRunner;
+import Animation.PauseScreen;
+import Animation.CountdownAnimation;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -20,13 +23,16 @@ import java.util.ArrayList;
  * @author Adi Ben Yehuda 211769757
  * @since 2022-04-14
  */
-public class Game {
+public class Game implements Animation {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
     private Counter availableBlocks;
     private Counter availableBalls;
     private Counter score;
+    private AnimationRunner runner;
+    private boolean running;
+    private KeyboardSensor keyboard;
 
     /**
      * The function constructs a new game.
@@ -38,6 +44,8 @@ public class Game {
         this.availableBlocks = new Counter();
         this.availableBalls = new Counter();
         this.score = new Counter();
+        this.runner = new AnimationRunner(gui);
+        this.keyboard = gui.getKeyboardSensor();
     }
 
     /**
@@ -96,12 +104,12 @@ public class Game {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int xBall = 100, yBall = 200, radius = 10, ballVelocity = 5;
+        int radius = 10, ballVelocity = 5, xPaddle = 325, yPaddle = 560;
 
         // Create new balls.
-        balls.add(new Ball(xBall, yBall, radius, Color.GREEN));
-        balls.add(new Ball(xBall / 2, yBall / 2, radius, Color.blue));
-        balls.add(new Ball(xBall / 3, yBall / 3, radius, Color.pink));
+        balls.add(new Ball(xPaddle + 30, yPaddle - 10, radius, Color.GREEN));
+        balls.add(new Ball(xPaddle + 80, yPaddle - 10, radius, Color.blue));
+        balls.add(new Ball(xPaddle + 130, yPaddle - 10, radius, Color.pink));
 
         // Add the balls to the game.
         for (int i = 0; i < 3; i++) {
@@ -109,6 +117,21 @@ public class Game {
             balls.get(i).setGameEnvironment(this.environment);
             balls.get(i).addToGame(this);
             this.availableBalls.increase(1);
+        }
+    }
+
+    /**
+     * The function creates balls on top of the paddle and adds them to the
+     * list of balls.
+     */
+    private void createBallsOnTopOfPaddle() {
+        BallRemover ballRemover;
+        ArrayList<Ball> balls = new ArrayList<>();
+
+        defineBalls(balls);
+        ballRemover = new BallRemover(this, availableBalls);
+        for (Ball ball : balls) {
+            ball.addHitListener(ballRemover);
         }
     }
 
@@ -173,22 +196,19 @@ public class Game {
     }
 
     /**
-     * The function initializes a new game: create the Blocks, Balls, and
+     * The function initializes a new game: create the Blocks, and
      * Paddle and add them to the game.
      */
     public void initialize() {
         int paddleWidth = 150, paddleHeight = 20, yBlock = 25;
         ArrayList<Block> blocks = new ArrayList<>();
-        ArrayList<Ball> balls = new ArrayList<>();
-        PrintingHitListener printingHitListener = new PrintingHitListener();
         BlockRemover blockRemover;
-        BallRemover ballRemover;
+
         ScoreTrackingListener scoreTrackingListener = new
                 ScoreTrackingListener(this.score);
 
         defineBlocks(blocks);
         for (Block block : blocks) {
-            block.addHitListener(printingHitListener);
             block.addHitListener(scoreTrackingListener);
             this.availableBlocks.increase(1);
         }
@@ -222,12 +242,6 @@ public class Game {
             block.addToGame(this);
         }
 
-        defineBalls(balls);
-        ballRemover = new BallRemover(this, availableBalls);
-        for (Ball ball : balls) {
-            ball.addHitListener(ballRemover);
-        }
-
         // Create a new paddle and add it to the game.
         Paddle paddle = new Paddle(gui.getKeyboardSensor(),
                 new Point(gui.getDrawSurface().getWidth() / 2
@@ -244,51 +258,42 @@ public class Game {
      * The function runs the game.
      */
     public void run() {
-        int xWin = 280, xLose = 180, yMss = 250, textSize = 50, xScore = 230,
-                yScore = 320, framesPerSecond = 60;
-        int millisecondsPerFrame = 1000 / framesPerSecond;
-        String winText = "YOU WIN", scoreText = "Your score is:",
-                loseText = "THE GAME IS OVER";
+        int numOfSeconds = 2000, countFrom = 3;
 
-        Sleeper sleeper = new Sleeper();
-
-        while (this.availableBalls.getValue() > 0
-                && this.availableBlocks.getValue() > 0) {
-            long startTime = System.currentTimeMillis(); // timing
-
-            DrawSurface d = gui.getDrawSurface();
-
-            this.sprites.drawAllOn(d);
-            gui.show(d);
-            this.sprites.notifyAllTimePassed();
-
-            // timing
-            long usedTime = System.currentTimeMillis() - startTime;
-            long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
-            if (milliSecondLeftToSleep > 0) {
-                sleeper.sleepFor(milliSecondLeftToSleep);
-            }
-        }
-
-        DrawSurface d = gui.getDrawSurface();
-        this.sprites.drawAllOn(d);
-        gui.show(d);
-        d = gui.getDrawSurface();
-
-        scoreText += score.getValue();
-
-        // That is, the player won the game
-        if (this.availableBlocks.getValue() == 0) {
-            d.drawText(xWin, yMss, winText, textSize);
-            d.drawText(xScore, yScore, scoreText, textSize);
-        } else if (this.availableBalls.getValue() == 0) {
-            // That is, the player lost the game.
-            d.drawText(xLose, yMss, loseText, textSize);
-            d.drawText(xScore, yScore, scoreText, textSize);
-        }
-
-        gui.show(d);
-        sleeper.sleepFor(1500);
+        this.createBallsOnTopOfPaddle(); // or a similar method
+        this.runner.run(new CountdownAnimation(numOfSeconds, countFrom,
+                this.sprites)); // countdown before turn starts.
+        this.running = true;
+        this.runner.run(this);
         gui.close();
+    }
+
+    /**
+     * The function does one frame or ends the game.
+     *
+     * @param d
+     */
+    @Override
+    public void doOneFrame(DrawSurface d) {
+        if (this.availableBalls.getValue() > 0
+                && this.availableBlocks.getValue() > 0) {
+            if (this.keyboard.isPressed("p")) {
+                this.runner.run(new PauseScreen(this.keyboard));
+            }
+            this.sprites.drawAllOn(d);
+            this.sprites.notifyAllTimePassed();
+        } else {
+            this.running = false;
+        }
+    }
+
+    /**
+     * The function stops the game.
+     *
+     * @return true if the game is over, otherwise false.
+     */
+    @Override
+    public boolean shouldStop() {
+        return !this.running;
     }
 }
