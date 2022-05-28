@@ -7,6 +7,7 @@ import biuoop.KeyboardSensor;
 import collidable_and_sprites.Block;
 import collidable_and_sprites.Paddle;
 import collision_detection.Collidable;
+import collision_detection.Velocity;
 import different_sprites.ScoreIndicator;
 import geometry_primitives.Point;
 import different_sprites.Ball;
@@ -18,12 +19,13 @@ import Animation.CountdownAnimation;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Adi Ben Yehuda 211769757
  * @since 2022-04-14
  */
-public class Game implements Animation {
+public class GameLevel implements Animation {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
@@ -33,69 +35,21 @@ public class Game implements Animation {
     private AnimationRunner runner;
     private boolean running;
     private KeyboardSensor keyboard;
+    private LevelInformation levelInformation;
 
     /**
      * The function constructs a new game.
      *
      * @param gui
      */
-    public Game(GUI gui) {
+    public GameLevel(GUI gui, LevelInformation levelInformation) {
         this.gui = gui;
         this.availableBlocks = new Counter();
         this.availableBalls = new Counter();
         this.score = new Counter();
         this.runner = new AnimationRunner(gui);
         this.keyboard = gui.getKeyboardSensor();
-    }
-
-    /**
-     * The function creates blocks and adds them to the list of blocks.
-     *
-     * @param blocks
-     */
-    private void defineBlocks(ArrayList<Block> blocks) {
-        int blockWidth = 45, startX = 735, blockHeight = 20;
-        int blocksInRow = 12, yOfPoint = 100;
-
-        for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
-            blocks.add(new Block(new Point(startX - i, yOfPoint),
-                    blockWidth, blockHeight, Color.red));
-        }
-
-        blocksInRow--;
-        yOfPoint += blockHeight;
-        for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
-            blocks.add(new Block(new Point(startX - i, yOfPoint),
-                    blockWidth, blockHeight, Color.orange));
-        }
-
-        blocksInRow--;
-        yOfPoint += blockHeight;
-        for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
-            blocks.add(new Block(new Point(startX - i, yOfPoint),
-                    blockWidth, blockHeight, Color.yellow));
-        }
-
-        blocksInRow--;
-        yOfPoint += blockHeight;
-        for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
-            blocks.add(new Block(new Point(startX - i, yOfPoint),
-                    blockWidth, blockHeight, Color.pink));
-        }
-
-        blocksInRow--;
-        yOfPoint += blockHeight;
-        for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
-            blocks.add(new Block(new Point(startX - i, yOfPoint),
-                    blockWidth, blockHeight, Color.magenta));
-        }
-
-        blocksInRow--;
-        yOfPoint += blockHeight;
-        for (int i = 0; i < blocksInRow * blockWidth; i += blockWidth) {
-            blocks.add(new Block(new Point(startX - i, yOfPoint),
-                    blockWidth, blockHeight, Color.GRAY));
-        }
+        this.levelInformation = levelInformation;
     }
 
     /**
@@ -104,16 +58,15 @@ public class Game implements Animation {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int radius = 10, ballVelocity = 5, xPaddle = 325, yPaddle = 560;
+        int radius = 10, xPaddle = 325, yPaddle = 560;
+        List<Velocity> velocities = this.levelInformation.initialBallVelocities();
 
-        // Create new balls.
-        balls.add(new Ball(xPaddle + 30, yPaddle - 10, radius, Color.GREEN));
-        balls.add(new Ball(xPaddle + 80, yPaddle - 10, radius, Color.blue));
-        balls.add(new Ball(xPaddle + 130, yPaddle - 10, radius, Color.pink));
-
-        // Add the balls to the game.
-        for (int i = 0; i < 3; i++) {
-            balls.get(i).setVelocity(ballVelocity, ballVelocity);
+        for (int i = 0; i < this.levelInformation.numberOfBalls(); i++) {
+            // Create new ball and add it to the balls list.
+            balls.add(new Ball(xPaddle + (i + 1) * 30, yPaddle - 10,
+                    radius, Color.gray));
+            // Set the velocity according to the level.
+            balls.get(i).setVelocity(velocities.get(i));
             balls.get(i).setGameEnvironment(this.environment);
             balls.get(i).addToGame(this);
             this.availableBalls.increase(1);
@@ -129,6 +82,7 @@ public class Game implements Animation {
         ArrayList<Ball> balls = new ArrayList<>();
 
         defineBalls(balls);
+        // Define each ball to remove blocks.
         ballRemover = new BallRemover(this, availableBalls);
         for (Ball ball : balls) {
             ball.addHitListener(ballRemover);
@@ -196,23 +150,33 @@ public class Game implements Animation {
     }
 
     /**
-     * The function initializes a new game: create the Blocks, and
-     * Paddle and add them to the game.
+     * The function initializes a new game: create the Blocks and Paddle
+     * and add them to the game.
      */
     public void initialize() {
-        int paddleWidth = 150, paddleHeight = 20, yBlock = 25;
+        int paddleHeight = 20, yBlock = 25;
         ArrayList<Block> blocks = new ArrayList<>();
         BlockRemover blockRemover;
 
         ScoreTrackingListener scoreTrackingListener = new
                 ScoreTrackingListener(this.score);
 
-        defineBlocks(blocks);
-        for (Block block : blocks) {
-            block.addHitListener(scoreTrackingListener);
+        for (int i = 0; i < levelInformation.numberOfBlocksToRemove(); i++) {
+            // Add the blocks of the level to the blocks list.
+            blocks.add(levelInformation.blocks().get(i));
+            // Each block has a score when hit.
+            levelInformation.blocks().get(i).
+                    addHitListener(scoreTrackingListener);
             this.availableBlocks.increase(1);
         }
 
+        for (int i = levelInformation.numberOfBlocksToRemove();
+             i < levelInformation.blocks().size(); i++) {
+            // Add the blocks of the level to the blocks list.
+            blocks.add(levelInformation.blocks().get(i));
+        }
+
+        // Define the bottom border block.
         Block deathRegion = new Block(new Point(0,
                 gui.getDrawSurface().getHeight() - paddleHeight),
                 gui.getDrawSurface().getWidth(), paddleHeight);
@@ -220,6 +184,7 @@ public class Game implements Animation {
 
         blockRemover = new BlockRemover(this, availableBlocks);
         for (Block block : blocks) {
+            // The block should be removed when hitting it.
             block.addHitListener(blockRemover);
         }
 
@@ -245,13 +210,19 @@ public class Game implements Animation {
         // Create a new paddle and add it to the game.
         Paddle paddle = new Paddle(gui.getKeyboardSensor(),
                 new Point(gui.getDrawSurface().getWidth() / 2
-                        - paddleWidth / 2, gui.getDrawSurface().getHeight()
-                        - paddleHeight * 2), paddleWidth, paddleHeight, gui,
-                Color.CYAN);
+                        - this.levelInformation.paddleWidth() / 2,
+                        gui.getDrawSurface().getHeight() - paddleHeight * 2),
+                this.levelInformation.paddleWidth(), paddleHeight, gui,
+                Color.BLACK, this.levelInformation.paddleSpeed());
         paddle.addToGame(this);
 
+        // Print the score for the user.
         ScoreIndicator scoreIndicator = new ScoreIndicator(score);
         this.sprites.addSprite(scoreIndicator);
+
+        // Print the level name for the user.
+        LevelName levelName = new LevelName(this.levelInformation.levelName());
+        this.sprites.addSprite(levelName);
     }
 
     /**

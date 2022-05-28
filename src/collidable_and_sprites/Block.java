@@ -6,7 +6,7 @@ import collision_detection.HitListener;
 import collision_detection.HitNotifier;
 import collision_detection.Velocity;
 import different_sprites.Ball;
-import game.Game;
+import game.GameLevel;
 import geometry_primitives.Point;
 import geometry_primitives.Rectangle;
 import different_sprites.Sprite;
@@ -170,7 +170,7 @@ public class Block extends Rectangle implements Collidable, Sprite, HitNotifier 
      *
      * @param g
      */
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addSprite(this);
         g.addCollidable(this);
     }
@@ -180,7 +180,7 @@ public class Block extends Rectangle implements Collidable, Sprite, HitNotifier 
      *
      * @param game
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
         game.removeCollidable(this);
     }

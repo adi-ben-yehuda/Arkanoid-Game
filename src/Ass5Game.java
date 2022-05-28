@@ -1,4 +1,5 @@
-import game.Game;
+import levels.FirstLevel;
+import game.GameLevel;
 import biuoop.GUI;
 
 /**
@@ -14,8 +15,10 @@ public class Ass5Game {
      */
     public static void main(String[] args) {
         int width = 800, height = 600;
-        GUI gui = new GUI("The best game ever", width, height);
-        Game game = new Game(gui);
+        GUI gui = new GUI("Arkanoid game", width, height);
+
+        FirstLevel firstLevel = new FirstLevel(1, "lego man");
+        GameLevel game = new GameLevel(gui, firstLevel);
 
         game.initialize();
         game.run();

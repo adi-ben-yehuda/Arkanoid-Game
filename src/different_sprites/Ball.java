@@ -5,7 +5,7 @@ import collision_detection.CollisionInfo;
 import collision_detection.HitListener;
 import collision_detection.HitNotifier;
 import collision_detection.Velocity;
-import game.Game;
+import game.GameLevel;
 import game.GameEnvironment;
 import geometry_primitives.Line;
 import geometry_primitives.Point;
@@ -232,7 +232,7 @@ public class Ball implements Sprite, HitNotifier {
      *
      * @param g
      */
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addSprite(this);
     }
 
@@ -261,7 +261,7 @@ public class Ball implements Sprite, HitNotifier {
      *
      * @param g
      */
-    public void removeFromGame(Game g) {
+    public void removeFromGame(GameLevel g) {
         g.removeSprite(this);
     }
 
