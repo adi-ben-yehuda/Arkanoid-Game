@@ -1,5 +1,6 @@
 package levels;
 
+import biuoop.DrawSurface;
 import collidable_and_sprites.Block;
 import collision_detection.Velocity;
 import different_sprites.Ball;
@@ -19,8 +20,6 @@ public class FirstLevel implements LevelInformation {
     private int numberOfBalls;
     private String levelName;
     private List<Block> blocks;
-    private List<Ball> balls;
-    private int numberOfBlocksToRemove;
 
     /**
      * The function constructs a new FirstLevel.
@@ -32,8 +31,6 @@ public class FirstLevel implements LevelInformation {
         this.numberOfBalls = numberOfBalls;
         this.levelName = levelName;
         this.blocks = new ArrayList<>();
-        this.balls = new ArrayList<>();
-        this.numberOfBlocksToRemove = 0;
     }
 
     /**
@@ -94,14 +91,67 @@ public class FirstLevel implements LevelInformation {
         return this.levelName;
     }
 
+    /**
+     * The function returns a sprite with the background of the level.
+     *
+     * @return a sprite with the background of the level.
+     */
     @Override
     public Sprite getBackground() {
-        int xBlock = 400, yBlock = 120, blockSize = 35;
+        return new Block(new Point(377, 190), 80, 80, Color.red) {
+            @Override
+            public void drawOn(DrawSurface d) {
+                // Shirt
+                d.setColor(this.getColor());
+                d.fillRectangle((int) this.getUpperLeft().getX(),
+                        (int) this.getUpperLeft().getY(), (int) this.getWidth(),
+                        (int) this.getHeight());
+                d.setColor(Color.black);
+                // Jeans
+                d.setColor(Color.BLUE);
+                d.fillRectangle(377, 270, 30, 80);
+                d.fillRectangle(427, 270, 30, 80);
+                // Hands
+                d.setColor(Color.red);
+                d.fillRectangle(347, 190, 30, 60);
+                d.fillRectangle(457, 190, 30, 60);
+                // Fingers
+                d.setColor(Color.yellow);
+                d.fillCircle(360, 260, 10);
+                d.fillCircle(475, 260, 10);
 
-        Block block = new Block(new Point(xBlock, yBlock), blockSize,
-                blockSize, Color.YELLOW);
+                d.setColor(Color.black);
+                // Jeans
+                d.drawRectangle(377, 270, 30, 80);
+                d.drawRectangle(427, 270, 30, 80);
+                // Hands
+                d.drawRectangle(347, 190, 30, 60);
+                d.drawRectangle(457, 190, 30, 60);
+                // Fingers
+                d.drawCircle(360, 260, 10);
+                d.drawCircle(475, 260, 10);
+                // Shirt
+                d.drawRectangle((int) this.getUpperLeft().getX(),
+                        (int) this.getUpperLeft().getY(), (int) this.getWidth(),
+                        (int) this.getHeight());
+                // Eyes
+                d.fillCircle(410, 165, 4);
+                d.fillCircle(430, 165, 4);
+                // Mouse
+                d.fillRectangle(410, 175, 20, 3);
+                d.drawRectangle(410, 175, 20, 3);
+                // Shoes
+                d.drawRectangle(377, 330, 30, 20);
+                d.drawRectangle(427, 330, 30, 20);
 
-        return block;
+                // Text
+                d.drawText(200, 100, "Hit me", 20);
+                d.drawText(180, 125, "in the head", 20);
+                d.drawCircle(230, 115, 60);
+                d.drawCircle(325, 130, 15);
+                d.drawCircle(365, 150, 10);
+            }
+        };
     }
 
     /**
@@ -112,11 +162,23 @@ public class FirstLevel implements LevelInformation {
      */
     @Override
     public List<Block> blocks() {
-        int xBlock = 400, yBlock = 120, blockSize = 35;
+        int xBlock = 395, yBlock = 150, blockSize = 50;
+        Block newBlock = new Block(new Point(xBlock, yBlock), blockSize,
+                blockSize, Color.YELLOW);
+        boolean isExist = false;
 
-        this.blocks.add(new Block(new Point(xBlock, yBlock), blockSize,
-                blockSize, Color.YELLOW));
-        this.numberOfBlocksToRemove++;
+        /// Check if the new block is in the blocks list.
+        for (Block block : blocks) {
+            if (block.equal(newBlock)) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (!isExist) {
+            this.blocks.add(newBlock);
+        }
+
         return this.blocks;
     }
 
@@ -127,6 +189,6 @@ public class FirstLevel implements LevelInformation {
      */
     @Override
     public int numberOfBlocksToRemove() {
-        return this.numberOfBlocksToRemove;
+        return this.blocks().size();
     }
 }

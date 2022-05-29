@@ -36,7 +36,7 @@ public class CountdownAnimation implements Animation {
      */
     @Override
     public void doOneFrame(DrawSurface d) {
-        int xText = 400, yText = 350, textSize = 70;
+        int xText = 400, yText = 500, textSize = 70;
         Sleeper sleeper = new Sleeper();
 
         if (countFrom != count) {

@@ -149,4 +149,19 @@ public class Rectangle {
     public Color getColor() {
         return color;
     }
+
+    /**
+     * The function checks if the rectangles are equal.
+     *
+     * @return true if the rectangles are equal, false otherwise.
+     */
+    public boolean equal(Rectangle rectangle) {
+        if (this.upperLeft.equals(rectangle.upperLeft)
+                && this.height == rectangle.height
+                && this.width == rectangle.width
+                && this.color.equals(rectangle.color)) {
+            return true;
+        }
+        return false;
+    }
 }

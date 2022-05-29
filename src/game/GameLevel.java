@@ -58,7 +58,7 @@ public class GameLevel implements Animation {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int radius = 10, xPaddle = 325, yPaddle = 560;
+        int radius = 10, xPaddle = 380, yPaddle = 560;
         List<Velocity> velocities = this.levelInformation.initialBallVelocities();
 
         for (int i = 0; i < this.levelInformation.numberOfBalls(); i++) {
@@ -160,6 +160,7 @@ public class GameLevel implements Animation {
 
         ScoreTrackingListener scoreTrackingListener = new
                 ScoreTrackingListener(this.score);
+        this.availableBlocks.increase(levelInformation.numberOfBlocksToRemove());
 
         for (int i = 0; i < levelInformation.numberOfBlocksToRemove(); i++) {
             // Add the blocks of the level to the blocks list.
@@ -167,7 +168,6 @@ public class GameLevel implements Animation {
             // Each block has a score when hit.
             levelInformation.blocks().get(i).
                     addHitListener(scoreTrackingListener);
-            this.availableBlocks.increase(1);
         }
 
         for (int i = levelInformation.numberOfBlocksToRemove();
@@ -223,6 +223,8 @@ public class GameLevel implements Animation {
         // Print the level name for the user.
         LevelName levelName = new LevelName(this.levelInformation.levelName());
         this.sprites.addSprite(levelName);
+
+        this.sprites.addSprite(this.levelInformation.getBackground());
     }
 
     /**
