@@ -2,6 +2,7 @@ import levels.FirstLevel;
 import game.GameLevel;
 import biuoop.GUI;
 import levels.SecondLevel;
+import levels.ThirdLevel;
 
 /**
  * @author Adi Ben Yehuda 211769757
@@ -20,7 +21,8 @@ public class Ass5Game {
 
         FirstLevel firstLevel = new FirstLevel();
         SecondLevel secondLevel = new SecondLevel();
-        GameLevel game = new GameLevel(gui, secondLevel);
+        ThirdLevel thirdLevel = new ThirdLevel();
+        GameLevel game = new GameLevel(gui, thirdLevel);
 
         game.initialize();
         game.run();

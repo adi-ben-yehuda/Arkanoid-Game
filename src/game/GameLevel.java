@@ -170,12 +170,6 @@ public class GameLevel implements Animation {
                     addHitListener(scoreTrackingListener);
         }
 
-        for (int i = levelInformation.numberOfBlocksToRemove();
-             i < levelInformation.blocks().size(); i++) {
-            // Add the blocks of the level to the blocks list.
-            blocks.add(levelInformation.blocks().get(i));
-        }
-
         // Define the bottom border block.
         Block deathRegion = new Block(new Point(0,
                 gui.getDrawSurface().getHeight() - paddleHeight),
@@ -224,7 +218,9 @@ public class GameLevel implements Animation {
         LevelName levelName = new LevelName(this.levelInformation.levelName());
         this.sprites.addSprite(levelName);
 
-        this.sprites.addSprite(this.levelInformation.getBackground());
+        if (this.levelInformation.getBackground() != null) {
+            this.sprites.addSprite(this.levelInformation.getBackground());
+        }
     }
 
     /**
