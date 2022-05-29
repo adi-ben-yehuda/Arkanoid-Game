@@ -3,7 +3,6 @@ package levels;
 import biuoop.DrawSurface;
 import collidable_and_sprites.Block;
 import collision_detection.Velocity;
-import different_sprites.Ball;
 import different_sprites.Sprite;
 import game.LevelInformation;
 import geometry_primitives.Point;
@@ -18,18 +17,13 @@ import java.util.List;
  */
 public class FirstLevel implements LevelInformation {
     private int numberOfBalls;
-    private String levelName;
     private List<Block> blocks;
 
     /**
      * The function constructs a new FirstLevel.
-     *
-     * @param levelName
-     * @param numberOfBalls
      */
-    public FirstLevel(int numberOfBalls, String levelName) {
-        this.numberOfBalls = numberOfBalls;
-        this.levelName = levelName;
+    public FirstLevel() {
+        this.numberOfBalls = 1;
         this.blocks = new ArrayList<>();
     }
 
@@ -52,12 +46,7 @@ public class FirstLevel implements LevelInformation {
     public List<Velocity> initialBallVelocities() {
         int increaseVelocityBy = 5;
         List<Velocity> velocities = new ArrayList<>();
-
-        for (int i = 0; i < numberOfBalls; i++) {
-            velocities.add(new Velocity((i + 1) * increaseVelocityBy,
-                    (i + 1) * increaseVelocityBy));
-        }
-
+        velocities.add(new Velocity(increaseVelocityBy, increaseVelocityBy));
         return velocities;
     }
 
@@ -88,7 +77,7 @@ public class FirstLevel implements LevelInformation {
      */
     @Override
     public String levelName() {
-        return this.levelName;
+        return "Lego man";
     }
 
     /**
@@ -163,20 +152,10 @@ public class FirstLevel implements LevelInformation {
     @Override
     public List<Block> blocks() {
         int xBlock = 395, yBlock = 150, blockSize = 50;
-        Block newBlock = new Block(new Point(xBlock, yBlock), blockSize,
-                blockSize, Color.YELLOW);
-        boolean isExist = false;
 
-        /// Check if the new block is in the blocks list.
-        for (Block block : blocks) {
-            if (block.equal(newBlock)) {
-                isExist = true;
-                break;
-            }
-        }
-
-        if (!isExist) {
-            this.blocks.add(newBlock);
+        if (blocks.size() == 0) {
+            blocks.add(new Block(new Point(xBlock, yBlock), blockSize,
+                    blockSize, Color.YELLOW));
         }
 
         return this.blocks;
@@ -189,6 +168,6 @@ public class FirstLevel implements LevelInformation {
      */
     @Override
     public int numberOfBlocksToRemove() {
-        return this.blocks().size();
+        return 1;
     }
 }
