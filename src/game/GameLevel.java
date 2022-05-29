@@ -58,7 +58,7 @@ public class GameLevel implements Animation {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int radius = 10, xPaddle = 380, yPaddle = 560;
+        int radius = 10, xPaddle = 360, yPaddle = 560;
         List<Velocity> velocities = this.levelInformation.initialBallVelocities();
 
         for (int i = 0; i < this.levelInformation.numberOfBalls(); i++) {
