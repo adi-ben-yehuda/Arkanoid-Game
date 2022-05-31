@@ -87,14 +87,12 @@ public class FirstLevel implements LevelInformation {
      */
     @Override
     public Sprite getBackground() {
-        return new Block(new Point(377, 190), 80, 80, Color.red) {
+        return new Sprite() {
             @Override
             public void drawOn(DrawSurface d) {
                 // Shirt
-                d.setColor(this.getColor());
-                d.fillRectangle((int) this.getUpperLeft().getX(),
-                        (int) this.getUpperLeft().getY(), (int) this.getWidth(),
-                        (int) this.getHeight());
+                d.setColor(Color.red);
+                d.fillRectangle(377, 190, 80, 80);
                 d.setColor(Color.black);
                 // Jeans
                 d.setColor(Color.BLUE);
@@ -120,9 +118,7 @@ public class FirstLevel implements LevelInformation {
                 d.drawCircle(360, 260, 10);
                 d.drawCircle(475, 260, 10);
                 // Shirt
-                d.drawRectangle((int) this.getUpperLeft().getX(),
-                        (int) this.getUpperLeft().getY(), (int) this.getWidth(),
-                        (int) this.getHeight());
+                d.drawRectangle(377, 190, 80, 80);
                 // Eyes
                 d.fillCircle(410, 165, 4);
                 d.fillCircle(430, 165, 4);
@@ -139,6 +135,11 @@ public class FirstLevel implements LevelInformation {
                 d.drawCircle(230, 115, 60);
                 d.drawCircle(325, 130, 15);
                 d.drawCircle(365, 150, 10);
+            }
+
+            @Override
+            public void timePassed() {
+
             }
         };
     }

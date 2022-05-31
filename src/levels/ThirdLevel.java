@@ -92,20 +92,16 @@ public class ThirdLevel implements LevelInformation {
             @Override
             public void drawOn(DrawSurface d) {
                 // Jeans up
-                d.setColor(this.getColor());
-                d.fillRectangle((int) this.getUpperLeft().getX(),
-                        (int) this.getUpperLeft().getY(), (int) this.getWidth(),
-                        (int) this.getHeight());
+                d.setColor(Color.BLUE);
+                d.fillRectangle(330, 150, 30, 20);
                 // Jeans down
-                d.fillRectangle(310, (int) this.getUpperLeft().getY(),
-                        (int) this.getHeight(), 50);
+                d.fillRectangle(310, 150, 20, 50);
                 // Shoe
                 d.setColor(Color.DARK_GRAY);
-                d.fillRectangle(290, 200, (int) this.getHeight() * 2,
-                        (int) this.getHeight());
+                d.fillRectangle(290, 200, 40, 20);
                 // Shirt
                 d.setColor(Color.magenta);
-                d.fillRectangle(340, 100, (int) this.getHeight(), 50);
+                d.fillRectangle(340, 100, 20, 50);
                 // Hands
                 d.fillRectangle(310, 100, 30, 20);
                 // Head
@@ -127,17 +123,13 @@ public class ThirdLevel implements LevelInformation {
 
                 d.setColor(Color.black);
                 // Jeans up
-                d.drawRectangle((int) this.getUpperLeft().getX(),
-                        (int) this.getUpperLeft().getY(), (int) this.getWidth(),
-                        (int) this.getHeight());
+                d.drawRectangle(330, 150, 30, 20);
                 // Jeans down
-                d.drawRectangle(310, (int) this.getUpperLeft().getY(),
-                        (int) this.getHeight(), 50);
+                d.drawRectangle(310, 150, 20, 50);
                 // Shoe
-                d.drawRectangle(290, 200, (int) this.getHeight() * 2,
-                        (int) this.getHeight());
+                d.drawRectangle(290, 200, 40, 20);
                 // Shirt
-                d.drawRectangle(340, 100, (int) this.getHeight(), 50);
+                d.drawRectangle(340, 100, 20, 50);
                 // Hands
                 d.drawRectangle(310, 100, 30, 20);
                 // Head

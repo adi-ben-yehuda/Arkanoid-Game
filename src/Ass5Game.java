@@ -25,7 +25,7 @@ public class Ass5Game {
         ThirdLevel thirdLevel = new ThirdLevel();
         FourthLevel fourthLevel = new FourthLevel();
 
-        GameLevel game = new GameLevel(gui, fourthLevel);
+        GameLevel game = new GameLevel(gui, thirdLevel);
 
         game.initialize();
         game.run();

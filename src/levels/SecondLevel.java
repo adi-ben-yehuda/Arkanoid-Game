@@ -88,7 +88,7 @@ public class SecondLevel implements LevelInformation {
      */
     @Override
     public Sprite getBackground() {
-        return new Block(new Point(50, 172), 50, 20, Color.red) {
+        return new Sprite() {
             @Override
             public void drawOn(DrawSurface d) {
                 int disBetweenCars = 150, xFirstWheel = 65, xSecondWheel = 85,
@@ -106,17 +106,11 @@ public class SecondLevel implements LevelInformation {
                 for (int i = 0; i < 5; i++) {
                     d.setColor(colors[i]);
                     // Fill the car
-                    d.fillRectangle((int) this.getUpperLeft().getX()
-                                    + disBetweenCars * i,
-                            (int) this.getUpperLeft().getY(),
-                            (int) this.getWidth(), (int) this.getHeight());
+                    d.fillRectangle(50 + disBetweenCars * i, 172, 50, 20);
 
                     d.setColor(Color.black);
                     // Draw the car.
-                    d.drawRectangle((int) this.getUpperLeft().getX()
-                                    + disBetweenCars * i,
-                            (int) this.getUpperLeft().getY(),
-                            (int) this.getWidth(), (int) this.getHeight());
+                    d.drawRectangle(50 + disBetweenCars * i, 172, 50, 20);
                     // Wheels of the car
                     d.fillCircle(xFirstWheel + disBetweenCars * i, yWheel,
                             sizeWheel);
@@ -126,6 +120,11 @@ public class SecondLevel implements LevelInformation {
 
                 // Road
                 d.fillRectangle(xRoad, yRoad, widthRoad, heightRoad);
+            }
+
+            @Override
+            public void timePassed() {
+
             }
         };
     }

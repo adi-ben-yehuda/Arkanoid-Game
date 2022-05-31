@@ -86,15 +86,17 @@ public class FourthLevel implements LevelInformation {
         return new Sprite() {
             @Override
             public void drawOn(DrawSurface d) {
+                int sizeText = 25;
+
                 d.setColor(Color.BLACK);
                 d.drawText(50, 80, "The daily sentence is :" +
-                        " (Hit all the blocks to know)", 25);
+                        " (Hit all the blocks to know)", sizeText);
                 d.setColor(Color.magenta);
-                d.drawText(100, 139, "Never give up", 25);
+                d.drawText(100, 139, "Never give up", sizeText);
                 d.setColor(Color.orange);
-                d.drawText(150, 185, "because great things", 25);
+                d.drawText(150, 185, "because great things", sizeText);
                 d.setColor(Color.CYAN);
-                d.drawText(230, 235, "take time", 25);
+                d.drawText(230, 235, "take time", sizeText);
             }
 
             @Override
