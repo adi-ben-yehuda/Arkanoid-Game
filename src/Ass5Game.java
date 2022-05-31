@@ -1,9 +1,16 @@
+import Animation.AnimationRunner;
+import biuoop.KeyboardSensor;
+import game.GameFlow;
+import game.LevelInformation;
 import levels.FirstLevel;
 import game.GameLevel;
 import biuoop.GUI;
 import levels.FourthLevel;
 import levels.SecondLevel;
 import levels.ThirdLevel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Adi Ben Yehuda 211769757
@@ -19,15 +26,16 @@ public class Ass5Game {
     public static void main(String[] args) {
         int width = 800, height = 600;
         GUI gui = new GUI("Arkanoid game", width, height);
+        AnimationRunner animationRunner = new AnimationRunner(gui);
+        KeyboardSensor keyboardSensor = gui.getKeyboardSensor();
 
-        FirstLevel firstLevel = new FirstLevel();
-        SecondLevel secondLevel = new SecondLevel();
-        ThirdLevel thirdLevel = new ThirdLevel();
-        FourthLevel fourthLevel = new FourthLevel();
+        List<LevelInformation> levels = new ArrayList<>();
+        levels.add(new FirstLevel());
+//        levels.add(new SecondLevel());
+//        levels.add(new ThirdLevel());
+//        levels.add(new FourthLevel());
 
-        GameLevel game = new GameLevel(gui, thirdLevel);
-
-        game.initialize();
-        game.run();
+        GameFlow gameFlow = new GameFlow(animationRunner, keyboardSensor, gui);
+        gameFlow.runLevels(levels);
     }
 }

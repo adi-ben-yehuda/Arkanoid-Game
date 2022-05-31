@@ -41,14 +41,18 @@ public class GameLevel implements Animation {
      * The function constructs a new game.
      *
      * @param gui
+     * @param keyboard
+     * @param levelInformation
+     * @param runner
      */
-    public GameLevel(GUI gui, LevelInformation levelInformation) {
+    public GameLevel(LevelInformation levelInformation, KeyboardSensor keyboard,
+                     AnimationRunner runner, GUI gui) {
         this.gui = gui;
         this.availableBlocks = new Counter();
         this.availableBalls = new Counter();
         this.score = new Counter();
-        this.runner = new AnimationRunner(gui);
-        this.keyboard = gui.getKeyboardSensor();
+        this.runner = runner;
+        this.keyboard = keyboard;
         this.levelInformation = levelInformation;
     }
 
@@ -96,6 +100,15 @@ public class GameLevel implements Animation {
      */
     public void setScore(int number) {
         this.score.increase(number);
+    }
+
+    /**
+     * The function returns the score of the user.
+     *
+     * @return the score of the user.
+     */
+    public Counter getScore() {
+        return score;
     }
 
     /**
@@ -221,6 +234,8 @@ public class GameLevel implements Animation {
         if (this.levelInformation.getBackground() != null) {
             this.sprites.addSprite(this.levelInformation.getBackground());
         }
+
+        this.createBallsOnTopOfPaddle(); // or a similar method
     }
 
     /**
@@ -229,12 +244,10 @@ public class GameLevel implements Animation {
     public void run() {
         int numOfSeconds = 2, countFrom = 3;
 
-        this.createBallsOnTopOfPaddle(); // or a similar method
         this.runner.run(new CountdownAnimation(numOfSeconds, countFrom,
                 this.sprites)); // countdown before turn starts.
         this.running = true;
         this.runner.run(this);
-        gui.close();
     }
 
     /**
@@ -246,6 +259,7 @@ public class GameLevel implements Animation {
     public void doOneFrame(DrawSurface d) {
         if (this.availableBalls.getValue() > 0
                 && this.availableBlocks.getValue() > 0) {
+            // Pause the game when the user presses on p.
             if (this.keyboard.isPressed("p")) {
                 this.runner.run(new PauseScreen(this.keyboard));
             }
@@ -257,6 +271,31 @@ public class GameLevel implements Animation {
     }
 
     /**
+     * The function checks if there are balls and blocks in the game.
+     *
+     * @return true if there are balls and blocks in the game, otherwise false.
+     */
+    public boolean hasBlocksAndBalls() {
+        if (this.availableBalls.getValue() > 0
+                && this.availableBlocks.getValue() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * The function checks if there are balls in the game.
+     *
+     * @return true if there are balls in the game, otherwise false.
+     */
+    public boolean hasBalls() {
+        if (this.availableBalls.getValue() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * The function stops the game.
      *
      * @return true if the game is over, otherwise false.
@@ -264,5 +303,35 @@ public class GameLevel implements Animation {
     @Override
     public boolean shouldStop() {
         return !this.running;
+    }
+
+    /**
+     * The function presents the end game screen in the surface.
+     */
+    public void endScreen() {
+        int xWin = 280, xLose = 275, yMss = 250, textSize = 50, xScore = 230,
+                yScore = 320, framesPerSecond = 60;
+        String winText = "YOU WIN!", loseText = "Game Over.",
+                scoreText = "Your score is " + score.getValue();
+        DrawSurface d = gui.getDrawSurface();
+
+        // That is, the player won the game
+        if (this.availableBlocks.getValue() == 0) {
+            d.drawText(xWin, yMss, winText, textSize);
+            d.drawText(xScore, yScore, scoreText, textSize);
+        } else if (this.availableBalls.getValue() == 0) {
+            // That is, the player lost the game.
+            d.drawText(xLose, yMss, loseText, textSize);
+            d.drawText(xScore, yScore, scoreText, textSize);
+        }
+
+        gui.show(d);
+
+        // Show the page until the user clicks space and then close the page.
+        while (true) {
+            if (this.keyboard.isPressed(KeyboardSensor.SPACE_KEY)) {
+                gui.close();
+            }
+        }
     }
 }
