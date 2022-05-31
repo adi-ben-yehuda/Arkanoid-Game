@@ -40,7 +40,7 @@ public class SecondLevel implements LevelInformation {
      */
     @Override
     public List<Velocity> initialBallVelocities() {
-        int increaseVelocityBy = 3;
+        int increaseVelocityBy = 2;
         List<Velocity> velocities = new ArrayList<>();
 
         for (int i = 0; i < numberOfBalls; i++) {

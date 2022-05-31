@@ -40,7 +40,7 @@ public class CountdownAnimation implements Animation {
         Sleeper sleeper = new Sleeper();
 
         if (countFrom != count) {
-            sleeper.sleepFor((long) (numOfSeconds / countFrom));
+            sleeper.sleepFor((long) (numOfSeconds * 1000 / countFrom));
         }
 
         d.drawText(xText, yText, Integer.toString(count), textSize);

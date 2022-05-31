@@ -58,7 +58,7 @@ public class GameLevel implements Animation {
      * @param balls
      */
     private void defineBalls(ArrayList<Ball> balls) {
-        int radius = 10, xPaddle = 360, yPaddle = 560;
+        int radius = 10, xPaddle = 365, yPaddle = 560;
         List<Velocity> velocities = this.levelInformation.initialBallVelocities();
 
         for (int i = 0; i < this.levelInformation.numberOfBalls(); i++) {
@@ -227,7 +227,7 @@ public class GameLevel implements Animation {
      * The function runs the game.
      */
     public void run() {
-        int numOfSeconds = 2000, countFrom = 3;
+        int numOfSeconds = 2, countFrom = 3;
 
         this.createBallsOnTopOfPaddle(); // or a similar method
         this.runner.run(new CountdownAnimation(numOfSeconds, countFrom,

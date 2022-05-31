@@ -83,14 +83,23 @@ public class FourthLevel implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return new Block(new Point(330, 150), 30, 20, Color.BLACK) {
+        return new Sprite() {
             @Override
             public void drawOn(DrawSurface d) {
-                // Jeans up
-                d.setColor(this.getColor());
-                d.drawText(50, 100, "The daily sentence is :", 30);
                 d.setColor(Color.BLACK);
-                d.drawText(50, 290, "You", 30);
+                d.drawText(50, 80, "The daily sentence is :" +
+                        " (Hit all the blocks to know)", 25);
+                d.setColor(Color.magenta);
+                d.drawText(100, 139, "Never give up", 25);
+                d.setColor(Color.orange);
+                d.drawText(150, 185, "because great things", 25);
+                d.setColor(Color.CYAN);
+                d.drawText(230, 235, "take time", 25);
+            }
+
+            @Override
+            public void timePassed() {
+
             }
         };
     }
@@ -104,8 +113,7 @@ public class FourthLevel implements LevelInformation {
     @Override
     public List<Block> blocks() {
         int blockWidth = 51, startX = 735, blockHeight = 23,
-                blocksInRow = 15, startY = 130, numberOfRows = 7;
-
+                blocksInRow = 15, startY = 98, numberOfRows = 7;
         Color[] colors = new Color[7];
 
         // Define colors.
@@ -116,7 +124,6 @@ public class FourthLevel implements LevelInformation {
         colors[4] = Color.yellow;
         colors[5] = Color.CYAN;
         colors[6] = Color.green;
-
 
         // Define the blocks.
         for (int i = 0; i < numberOfRows; i++) {

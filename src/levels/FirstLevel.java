@@ -44,9 +44,9 @@ public class FirstLevel implements LevelInformation {
      */
     @Override
     public List<Velocity> initialBallVelocities() {
-        int increaseVelocityBy = 5;
+        int dy = -5, dx = 0;
         List<Velocity> velocities = new ArrayList<>();
-        velocities.add(new Velocity(increaseVelocityBy, increaseVelocityBy));
+        velocities.add(new Velocity(dx, dy));
         return velocities;
     }
 

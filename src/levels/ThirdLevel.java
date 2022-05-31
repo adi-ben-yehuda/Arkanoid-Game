@@ -40,7 +40,7 @@ public class ThirdLevel implements LevelInformation {
      */
     @Override
     public List<Velocity> initialBallVelocities() {
-        int increaseVelocityBy = 3;
+        int increaseVelocityBy = 4;
         List<Velocity> velocities = new ArrayList<>();
 
         for (int i = 0; i < numberOfBalls; i++) {
@@ -112,6 +112,14 @@ public class ThirdLevel implements LevelInformation {
                 d.setColor(Color.pink);
                 d.fillCircle(350, 84, 16);
                 d.setColor(Color.black);
+                // Hair
+                d.setColor(Color.yellow);
+                d.fillRectangle(366, 67, 20, 55);
+                d.fillRectangle(326, 59, 60, 10);
+                d.fillRectangle(326, 69, 10, 5);
+
+                d.setColor(Color.black);
+
                 // Eye
                 d.fillCircle(347, 80, 3);
                 // Mouse
@@ -142,7 +150,7 @@ public class ThirdLevel implements LevelInformation {
                 d.fillCircle(87, 220, 30);
 
                 // Monkey
-                d.setColor(Color.orange);
+                d.setColor(new Color(201, 141, 38)); // Brown
                 // Left hand
                 d.fillRectangle(100, 300, 20, 20);
                 d.fillRectangle(120, 320, 20, 20);
