@@ -16,6 +16,7 @@ import different_sprites.SpriteCollection;
 import Animation.AnimationRunner;
 import Animation.PauseScreen;
 import Animation.CountdownAnimation;
+import Animation.KeyPressStoppableAnimation;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -259,10 +260,32 @@ public class GameLevel implements Animation {
     public void doOneFrame(DrawSurface d) {
         if (this.availableBalls.getValue() > 0
                 && this.availableBlocks.getValue() > 0) {
+
             // Pause the game when the user presses on p.
             if (this.keyboard.isPressed("p")) {
-                this.runner.run(new PauseScreen(this.keyboard));
+                KeyPressStoppableAnimation keyPressStoppableAnimation =
+                        new KeyPressStoppableAnimation(this.keyboard,
+                                KeyboardSensor.SPACE_KEY,
+                                new PauseScreen(keyboard));
+                this.runner.run(keyPressStoppableAnimation);
             }
+
+            if (this.availableBlocks.getValue() == 0) {
+                // That is, the player won the game.
+                KeyPressStoppableAnimation keyPressStoppableAnimation =
+                        new KeyPressStoppableAnimation(this.keyboard,
+                                KeyboardSensor.SPACE_KEY,
+                                new YouWin(keyboard, score));
+                this.runner.run(keyPressStoppableAnimation);
+            } else if (this.availableBalls.getValue() == 0) {
+                // That is, the player lost the game.
+                KeyPressStoppableAnimation keyPressStoppableAnimation =
+                        new KeyPressStoppableAnimation(this.keyboard,
+                                KeyboardSensor.SPACE_KEY,
+                                new GameOver(keyboard, score));
+                this.runner.run(keyPressStoppableAnimation);
+            }
+
             this.sprites.drawAllOn(d);
             this.sprites.notifyAllTimePassed();
         } else {
@@ -308,30 +331,14 @@ public class GameLevel implements Animation {
     /**
      * The function presents the end game screen in the surface.
      */
-    public void endScreen() {
-        int xWin = 280, xLose = 275, yMss = 250, textSize = 50, xScore = 230,
-                yScore = 320, framesPerSecond = 60;
-        String winText = "YOU WIN!", loseText = "Game Over.",
-                scoreText = "Your score is " + score.getValue();
-        DrawSurface d = gui.getDrawSurface();
-
+    public Animation endScreen() {
         // That is, the player won the game
         if (this.availableBlocks.getValue() == 0) {
-            d.drawText(xWin, yMss, winText, textSize);
-            d.drawText(xScore, yScore, scoreText, textSize);
+            return new YouWin(keyboard, score);
         } else if (this.availableBalls.getValue() == 0) {
             // That is, the player lost the game.
-            d.drawText(xLose, yMss, loseText, textSize);
-            d.drawText(xScore, yScore, scoreText, textSize);
+            return new GameOver(keyboard, score);
         }
-
-        gui.show(d);
-
-        // Show the page until the user clicks space and then close the page.
-        while (true) {
-            if (this.keyboard.isPressed(KeyboardSensor.SPACE_KEY)) {
-                gui.close();
-            }
-        }
+        return null;
     }
 }

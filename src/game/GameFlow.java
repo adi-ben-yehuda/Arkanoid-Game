@@ -1,5 +1,6 @@
 package game;
 
+import Animation.Animation;
 import Animation.AnimationRunner;
 import biuoop.GUI;
 import biuoop.KeyboardSensor;
@@ -56,6 +57,15 @@ public class GameFlow {
             }
         }
 
-        level.endScreen();
+        endGame(level);
+    }
+
+    public void endGame(GameLevel level) {
+        Animation animation = level.endScreen();
+
+        while (!animation.shouldStop()) {
+            this.animationRunner.run(animation);
+        }
+        gui.close();
     }
 }
