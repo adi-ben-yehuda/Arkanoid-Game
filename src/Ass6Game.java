@@ -30,16 +30,16 @@ public class Ass6Game {
 
         List<LevelInformation> levels = new ArrayList<>();
 
-        // When run without arguments, you should start a game with four
-        // levels that run one after the other.
+        /* When run without arguments, you should start a game with four
+        levels that run one after the other. */
         if (args.length == 0) {
             levels.add(new FirstLevel());
             levels.add(new SecondLevel());
             levels.add(new ThirdLevel());
             levels.add(new FourthLevel());
         } else {
-            // When run with additional arguments, the arguments should be
-            // treated as a list of level numbers to run, in the specified order.
+            /* When run with additional arguments, the arguments should be
+            treated as a list of level numbers to run, in the specified order. */
             for (String level : args) {
                 switch (level) {
                     case "1":
@@ -60,7 +60,9 @@ public class Ass6Game {
             }
         }
 
-        GameFlow gameFlow = new GameFlow(animationRunner, keyboardSensor, gui);
-        gameFlow.runLevels(levels);
+        if (levels.size() > 0) {
+            GameFlow gameFlow = new GameFlow(animationRunner, keyboardSensor, gui);
+            gameFlow.runLevels(levels);
+        }
     }
 }
