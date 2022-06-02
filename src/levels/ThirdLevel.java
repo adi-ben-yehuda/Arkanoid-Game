@@ -7,16 +7,20 @@ import different_sprites.Sprite;
 import game.LevelInformation;
 import geometry_primitives.Point;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Adi Ben Yehuda 211769757
+ * @since 2022-05-28
+ */
 public class ThirdLevel implements LevelInformation {
     private int numberOfBalls;
     private List<Block> blocks;
 
     /**
-     * The function constructs a new ThirdLevel.
+     * The function constructs a new ThirdLevel object.
      */
     public ThirdLevel() {
         this.numberOfBalls = 2;
@@ -88,7 +92,12 @@ public class ThirdLevel implements LevelInformation {
      */
     @Override
     public Sprite getBackground() {
-        return new Block(new Point(330, 150), 30, 20, Color.BLUE) {
+        return new Sprite() {
+            /**
+             * The function draws the sprite to the screen.
+             *
+             * @param d
+             */
             @Override
             public void drawOn(DrawSurface d) {
                 // Jeans up
@@ -191,6 +200,14 @@ public class ThirdLevel implements LevelInformation {
                 d.drawCircle(273, 292, 40);
                 d.drawCircle(212, 310, 10);
             }
+
+            /**
+             * The function notifies the sprite that time has passed.
+             */
+            @Override
+            public void timePassed() {
+
+            }
         };
     }
 
@@ -226,6 +243,11 @@ public class ThirdLevel implements LevelInformation {
         return blocks;
     }
 
+    /**
+     * The function returns the number of blocks that should be removed.
+     *
+     * @return the number of blocks that should be removed.
+     */
     @Override
     public int numberOfBlocksToRemove() {
         return 40;

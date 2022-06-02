@@ -153,6 +153,7 @@ public class Rectangle {
     /**
      * The function checks if the rectangles are equal.
      *
+     * @param rectangle
      * @return true if the rectangles are equal, false otherwise.
      */
     public boolean equal(Rectangle rectangle) {

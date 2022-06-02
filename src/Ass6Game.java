@@ -40,7 +40,7 @@ public class Ass6Game {
         } else {
             // When run with additional arguments, the arguments should be
             // treated as a list of level numbers to run, in the specified order.
-            for (String level: args) {
+            for (String level : args) {
                 switch (level) {
                     case "1":
                         levels.add(new FirstLevel());
@@ -53,6 +53,8 @@ public class Ass6Game {
                         break;
                     case "4":
                         levels.add(new FourthLevel());
+                        break;
+                    default:
                         break;
                 }
             }

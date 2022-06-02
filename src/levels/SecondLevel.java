@@ -7,16 +7,20 @@ import different_sprites.Sprite;
 import game.LevelInformation;
 import geometry_primitives.Point;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Adi Ben Yehuda 211769757
+ * @since 2022-05-28
+ */
 public class SecondLevel implements LevelInformation {
     private int numberOfBalls;
     private List<Block> blocks;
 
     /**
-     * The function constructs a new SecondLevel.
+     * The function constructs a new SecondLevel object.
      */
     public SecondLevel() {
         this.numberOfBalls = 10;
@@ -89,6 +93,11 @@ public class SecondLevel implements LevelInformation {
     @Override
     public Sprite getBackground() {
         return new Sprite() {
+            /**
+             * The function draws the sprite to the screen.
+             *
+             * @param d
+             */
             @Override
             public void drawOn(DrawSurface d) {
                 int disBetweenCars = 150, xFirstWheel = 65, xSecondWheel = 85,
@@ -106,11 +115,13 @@ public class SecondLevel implements LevelInformation {
                 for (int i = 0; i < 5; i++) {
                     d.setColor(colors[i]);
                     // Fill the car
-                    d.fillRectangle(50 + disBetweenCars * i, 172, 50, 20);
+                    d.fillRectangle(50 + disBetweenCars * i, 172, 50,
+                            20);
 
                     d.setColor(Color.black);
                     // Draw the car.
-                    d.drawRectangle(50 + disBetweenCars * i, 172, 50, 20);
+                    d.drawRectangle(50 + disBetweenCars * i, 172, 50,
+                            20);
                     // Wheels of the car
                     d.fillCircle(xFirstWheel + disBetweenCars * i, yWheel,
                             sizeWheel);
@@ -122,6 +133,9 @@ public class SecondLevel implements LevelInformation {
                 d.fillRectangle(xRoad, yRoad, widthRoad, heightRoad);
             }
 
+            /**
+             * The function notifies the sprite that time has passed.
+             */
             @Override
             public void timePassed() {
 

@@ -330,6 +330,8 @@ public class GameLevel implements Animation {
 
     /**
      * The function presents the end game screen in the surface.
+     *
+     * @return you-win or game-over object, depends on the game.
      */
     public Animation endScreen() {
         // That is, the player won the game

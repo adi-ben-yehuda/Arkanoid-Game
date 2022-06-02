@@ -7,16 +7,20 @@ import different_sprites.Sprite;
 import game.LevelInformation;
 import geometry_primitives.Point;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Adi Ben Yehuda 211769757
+ * @since 2022-05-28
+ */
 public class FourthLevel implements LevelInformation {
     private int numberOfBalls;
     private List<Block> blocks;
 
     /**
-     * The function constructs a new FirstLevel.
+     * The function constructs a new FourthLevel object.
      */
     public FourthLevel() {
         this.numberOfBalls = 3;
@@ -81,16 +85,26 @@ public class FourthLevel implements LevelInformation {
         return "The daily sentence";
     }
 
+    /**
+     * The function returns a sprite with the background of the level.
+     *
+     * @return a sprite with the background of the level.
+     */
     @Override
     public Sprite getBackground() {
         return new Sprite() {
+            /**
+             * The function draws the sprite to the screen.
+             *
+             * @param d
+             */
             @Override
             public void drawOn(DrawSurface d) {
                 int sizeText = 25;
 
                 d.setColor(Color.BLACK);
-                d.drawText(50, 80, "The daily sentence is :" +
-                        " (Hit all the blocks to know)", sizeText);
+                d.drawText(50, 80, "The daily sentence is :"
+                        + " (Hit all the blocks to know)", sizeText);
                 d.setColor(Color.magenta);
                 d.drawText(100, 139, "Never give up", sizeText);
                 d.setColor(Color.orange);
@@ -99,6 +113,9 @@ public class FourthLevel implements LevelInformation {
                 d.drawText(230, 235, "take time", sizeText);
             }
 
+            /**
+             * The function notifies the sprite that time has passed.
+             */
             @Override
             public void timePassed() {
 

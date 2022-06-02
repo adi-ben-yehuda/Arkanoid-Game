@@ -34,6 +34,8 @@ public class BlockRemover implements HitListener {
      * @param hitter
      */
     public void hitEvent(Block beingHit, Ball hitter) {
+        int score = 100;
+
         /* Remove this listener from the block that is being removed from the
          game. */
         beingHit.getHitListeners().remove(this);
@@ -46,7 +48,7 @@ public class BlockRemover implements HitListener {
 
         // When there are no more blocks in the game, add 100 points to the score.
         if (this.remainingBlocks.getValue() == 0) {
-            this.game.setScore(100);
+            this.game.setScore(score);
         }
     }
 }

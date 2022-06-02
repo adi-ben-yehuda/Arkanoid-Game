@@ -39,9 +39,9 @@ public class PauseScreen implements Animation {
     }
 
     /**
-     * The function stops the game.
+     * The function stops displaying the pause screen.
      *
-     * @return true if the game is over, otherwise false.
+     * @return true if you need to stop displaying the pause screen, otherwise false.
      */
     @Override
     public boolean shouldStop() {

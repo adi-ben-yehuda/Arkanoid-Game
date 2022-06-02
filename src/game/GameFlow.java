@@ -60,6 +60,11 @@ public class GameFlow {
         endGame(level);
     }
 
+    /**
+     * The function displays the end game screen.
+     *
+     * @param level - the last level of the game.
+     */
     public void endGame(GameLevel level) {
         Animation animation = level.endScreen();
 

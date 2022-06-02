@@ -7,7 +7,7 @@ import different_sprites.Sprite;
 import game.LevelInformation;
 import geometry_primitives.Point;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class FirstLevel implements LevelInformation {
     private List<Block> blocks;
 
     /**
-     * The function constructs a new FirstLevel.
+     * The function constructs a new FirstLevel object.
      */
     public FirstLevel() {
         this.numberOfBalls = 1;
@@ -88,6 +88,11 @@ public class FirstLevel implements LevelInformation {
     @Override
     public Sprite getBackground() {
         return new Sprite() {
+            /**
+             * The function draws the sprite to the screen.
+             *
+             * @param d
+             */
             @Override
             public void drawOn(DrawSurface d) {
                 // Shirt
@@ -137,6 +142,9 @@ public class FirstLevel implements LevelInformation {
                 d.drawCircle(365, 150, 10);
             }
 
+            /**
+             * The function notifies the sprite that time has passed.
+             */
             @Override
             public void timePassed() {
 
