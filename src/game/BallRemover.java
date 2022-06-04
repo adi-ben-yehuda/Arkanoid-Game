@@ -9,7 +9,7 @@ import different_sprites.Ball;
  * @since 2022-04-14
  */
 public class BallRemover implements HitListener {
-    private Game game;
+    private GameLevel game;
     private Counter remainingBalls;
 
     /**
@@ -20,7 +20,7 @@ public class BallRemover implements HitListener {
      * @param game
      * @param remainingBalls
      */
-    public BallRemover(Game game, Counter remainingBalls) {
+    public BallRemover(GameLevel game, Counter remainingBalls) {
         this.game = game;
         this.remainingBalls = remainingBalls;
     }

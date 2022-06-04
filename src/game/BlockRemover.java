@@ -9,7 +9,7 @@ import different_sprites.Ball;
  * @since 2022-05-12
  */
 public class BlockRemover implements HitListener {
-    private Game game;
+    private GameLevel game;
     private Counter remainingBlocks;
 
     /**
@@ -20,7 +20,7 @@ public class BlockRemover implements HitListener {
      * @param game
      * @param removedBlocks
      */
-    public BlockRemover(Game game, Counter removedBlocks) {
+    public BlockRemover(GameLevel game, Counter removedBlocks) {
         this.game = game;
         this.remainingBlocks = removedBlocks;
     }
@@ -34,6 +34,8 @@ public class BlockRemover implements HitListener {
      * @param hitter
      */
     public void hitEvent(Block beingHit, Ball hitter) {
+        int score = 100;
+
         /* Remove this listener from the block that is being removed from the
          game. */
         beingHit.getHitListeners().remove(this);
@@ -44,9 +46,9 @@ public class BlockRemover implements HitListener {
         // Decrease the number of blocks.
         this.remainingBlocks.decrease(1);
 
-        // When there are no more blocks in the game, add 95 points to the score.
+        // When there are no more blocks in the game, add 100 points to the score.
         if (this.remainingBlocks.getValue() == 0) {
-            this.game.setScore(95);
+            this.game.setScore(score);
         }
     }
 }

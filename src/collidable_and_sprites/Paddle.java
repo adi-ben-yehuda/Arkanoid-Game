@@ -4,7 +4,7 @@ import biuoop.GUI;
 import biuoop.KeyboardSensor;
 import collision_detection.Collidable;
 import collision_detection.Velocity;
-import game.Game;
+import game.GameLevel;
 import geometry_primitives.Point;
 import different_sprites.Sprite;
 
@@ -17,6 +17,7 @@ import java.awt.Color;
 public class Paddle extends Block implements Sprite, Collidable {
     private KeyboardSensor keyboard;
     private GUI gui;
+    private int speed;
 
     /**
      * The function constructs a new collidable_and_sprites.Paddle-type object.
@@ -26,12 +27,14 @@ public class Paddle extends Block implements Sprite, Collidable {
      * @param width
      * @param height
      * @param gui
+     * @param speed
      */
     public Paddle(KeyboardSensor keyboard, Point upperLeft, double width,
-                  double height, GUI gui) {
+                  double height, GUI gui, int speed) {
         super(upperLeft, width, height);
         this.keyboard = keyboard;
         this.gui = gui;
+        this.speed = speed;
     }
 
     /**
@@ -43,20 +46,21 @@ public class Paddle extends Block implements Sprite, Collidable {
      * @param height
      * @param gui
      * @param color
+     * @param speed
      */
     public Paddle(KeyboardSensor keyboard, Point upperLeft, double width,
-                  double height, GUI gui, Color color) {
+                  double height, GUI gui, Color color, int speed) {
         super(upperLeft, width, height, color);
         this.keyboard = keyboard;
         this.gui = gui;
+        this.speed = speed;
     }
 
     /**
      * The function moves the paddle one step to the left side.
      */
     public void moveLeft() {
-        int moveLeftNumber = 7;
-        int widthOfLeftBlock = 20;
+        int moveLeftNumber = 7, widthOfLeftBlock = 20;
 
         if (super.getUpperLeft().getX() - moveLeftNumber > widthOfLeftBlock) {
             super.getUpperLeft().setX(super.getUpperLeft().getX() - moveLeftNumber);
@@ -69,13 +73,12 @@ public class Paddle extends Block implements Sprite, Collidable {
      * The function moves the paddle one step to the right side.
      */
     public void moveRight() {
-        int moveLeftNumber = 7, widthOfRightBlock = 20;
+        int widthOfRightBlock = 20;
 
-        if (super.getUpperLeft().getX() + moveLeftNumber
+        if (super.getUpperLeft().getX() + this.speed
                 < gui.getDrawSurface().getWidth() - widthOfRightBlock
-                        - super.getWidth()) {
-            super.getUpperLeft().setX(super.getUpperLeft().getX()
-                    + moveLeftNumber);
+                - super.getWidth()) {
+            super.getUpperLeft().setX(super.getUpperLeft().getX() + this.speed);
         } else {
             super.getUpperLeft().setX(gui.getDrawSurface().getWidth()
                     - widthOfRightBlock - super.getWidth());
@@ -100,7 +103,7 @@ public class Paddle extends Block implements Sprite, Collidable {
      * @param g
      */
     @Override
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addSprite(this);
         g.addCollidable(this);
     }
