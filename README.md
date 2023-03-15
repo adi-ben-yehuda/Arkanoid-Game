@@ -59,29 +59,16 @@ In the client, in option 5, writing to the file exists in a separate thread. Thu
 
 ## Installation
 Before installing this project, you need to install on your computer:
-* IDE that supports c++ (like Visual Studio Code or CLion).
 * Git
 
 After it, run the following commands in the terminal:
 
 ```
-git clone https://github.com/adi-ben-yehuda/advanced_ex_4.git
-make
-./server.out port
+git clone 
+ant compile
+ant -Dargs="{text}" run
 ```
-For example:
-```
-./server.out 12345
-```
-Open a new terminal and run the following commands in this terminal:
-
-```
-./client.out ip port
-```
-For example: 
-```
-./client.out 127.0.0.1 12345
-```
+The text will contain the levels that will be shown in the game. There are four levels. If the user enters different numbers or letters, the program will ignore it. 
 
 ## Contact
-Created by @adi-ben-yehuda and @ShaharMosh - feel free to contact us!
+Created by @adi-ben-yehuda - feel free to contact me!
