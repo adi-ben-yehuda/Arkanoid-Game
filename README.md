@@ -9,7 +9,7 @@ This Arkanoid game contains four levels. The player will win the game if he brea
 * [Contact](#Contact)
 
 ## General Information
-This game has blocks and balls. When the ball hits the block, the block disappears from the screen. If there are no more blocks on the screen, the player will be moved to the next level. When there are no more levels, meaning the player wins all levels, the player wins the game. Another situation is that there are no more balls on the screen. In this situation, the game is over and the player loses the game. 
+This game has blocks, balls, and a main block on the bottom. In order to move the main block press the right and left arrows on the keyboard. When the ball hits the block, the block disappears from the screen. If there are no more blocks on the screen, the player will be moved to the next level. When there are no more levels, meaning the player wins all levels, the player wins the game. Another situation is that there are no more balls on the screen. In this situation, the game is over and the player loses the game. 
 In addition, there is a score in the game. For each block hit, 5 points are added to his score, and for each new level, 100 points are added.
 In both modes, when the player wins or loses a game, a screen is displayed with the player's final score in that game.
 
@@ -23,8 +23,7 @@ The levels in the game are:
 
 
 #### Second level:
-<img width="594" alt="image" src="https://user-images.githubusercontent.com/75027826/225318935-928c58c7-2e9a-43c4-93ac-216a7aee9231.png">
-
+<img width="596" alt="image" src="https://user-images.githubusercontent.com/75027826/225320505-2ca9054b-7a59-4474-a48c-9d2d6dcfcd2a.png">
 
 #### Third level:
 <img width="598" alt="image" src="https://user-images.githubusercontent.com/75027826/225318770-0fdeee7c-b0f8-4673-88d3-d08cfc056e9b.png">
