@@ -14,7 +14,7 @@ In addition, there is a score in the game. For each block hit, 5 points are adde
 In both modes, when the player wins or loses a game, a screen is displayed with the player's final score in that game.
 
 <img width="600" alt="image" src="https://user-images.githubusercontent.com/75027826/225318444-5e3a6050-cf3e-4f52-8d69-7d06890a3bb4.png">
-<img width="317" alt="image" src="https://user-images.githubusercontent.com/75027826/225319006-8443c329-a501-4270-a41e-5a7ccfa6dfd2.png">
+<img width="591" alt="image" src="https://user-images.githubusercontent.com/75027826/225319451-9f59bedb-301f-4f23-8db4-9648cb0d240c.png">
 
 
 The levels in the game are:
@@ -33,7 +33,7 @@ The levels in the game are:
 #### Fourth level:
 <img width="597" alt="image" src="https://user-images.githubusercontent.com/75027826/225319247-d1423a9b-36d6-4fe5-afe8-b27b562a1e1a.png">
 
-
+In the command line, before starting the game, the player has to write the order of the levels and which levels will appear in the game.
 
 ## Installation
 Before installing this project, you need to install on your computer:
