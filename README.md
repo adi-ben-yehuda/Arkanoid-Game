@@ -16,18 +16,15 @@ In both modes, when the player wins or loses a game, a screen is displayed with 
 <img width="600" alt="image" src="https://user-images.githubusercontent.com/75027826/225318444-5e3a6050-cf3e-4f52-8d69-7d06890a3bb4.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/75027826/225319451-9f59bedb-301f-4f23-8db4-9648cb0d240c.png">
 
-
 The levels in the game are:
 #### First level:
 <img width="599" alt="image" src="https://user-images.githubusercontent.com/75027826/225316202-5aa57b0f-40d6-43d1-83a9-1410dd940208.png">
-
 
 #### Second level:
 <img width="596" alt="image" src="https://user-images.githubusercontent.com/75027826/225320505-2ca9054b-7a59-4474-a48c-9d2d6dcfcd2a.png">
 
 #### Third level:
 <img width="598" alt="image" src="https://user-images.githubusercontent.com/75027826/225318770-0fdeee7c-b0f8-4673-88d3-d08cfc056e9b.png">
-
 
 #### Fourth level:
 <img width="597" alt="image" src="https://user-images.githubusercontent.com/75027826/225319247-d1423a9b-36d6-4fe5-afe8-b27b562a1e1a.png">
