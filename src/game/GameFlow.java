@@ -8,7 +8,7 @@ import biuoop.KeyboardSensor;
 import java.util.List;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-05-31
  */
 public class GameFlow {

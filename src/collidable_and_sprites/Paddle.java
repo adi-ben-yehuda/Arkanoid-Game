@@ -11,7 +11,7 @@ import different_sprites.Sprite;
 import java.awt.Color;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-04-14
  */
 public class Paddle extends Block implements Sprite, Collidable {

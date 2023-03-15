@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.util.Random;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-03-24
  */
 public class MultipleBouncingBallsAnimation {

@@ -5,7 +5,7 @@ import geometry_primitives.Point;
 import geometry_primitives.Rectangle;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-04-08
  */
 public interface Collidable {

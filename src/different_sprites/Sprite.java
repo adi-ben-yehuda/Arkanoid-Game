@@ -3,7 +3,7 @@ package different_sprites;
 import biuoop.DrawSurface;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-04-15
  */
 public interface Sprite {

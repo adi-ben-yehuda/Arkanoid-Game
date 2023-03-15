@@ -5,7 +5,7 @@ import biuoop.GUI;
 import biuoop.Sleeper;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-05-26
  */
 public class AnimationRunner {

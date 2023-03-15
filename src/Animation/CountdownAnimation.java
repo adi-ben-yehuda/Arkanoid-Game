@@ -5,7 +5,7 @@ import biuoop.Sleeper;
 import different_sprites.SpriteCollection;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-05-26
  */
 public class CountdownAnimation implements Animation {

@@ -4,7 +4,7 @@ import biuoop.DrawSurface;
 import different_sprites.Sprite;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-05-28
  */
 public class LevelName implements Sprite {

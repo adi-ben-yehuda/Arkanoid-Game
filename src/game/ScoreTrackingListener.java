@@ -5,7 +5,7 @@ import collision_detection.HitListener;
 import different_sprites.Ball;
 
 /**
- * @author Adi Ben Yehuda 211769757
+ * @author Adi Ben Yehuda 
  * @since 2022-05-14
  */
 public class ScoreTrackingListener implements HitListener {
