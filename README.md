@@ -10,6 +10,7 @@ This Arkanoid game contains four levels. The player will win the game if he brea
 
 ## General Information
 This game has blocks, balls, and a main block on the bottom. In order to move the main block press the right or left arrows on the keyboard. When the ball hits the block, the block disappears from the screen. If there are no more blocks on the screen, the player will be moved to the next level. When there are no more levels, meaning the player wins all levels, the player wins the game. Another situation is that if a ball hits the bottom of the screen (not the main block), the ball will disappear from the game. When there are no more balls on the screen, the game will end and the player loses the game. 
+
 In addition, there is a score in the game. For each block hit, 5 points are added to his score, and for each new level, 100 points are added.
 In both modes, when the player wins or loses a game, a screen is displayed with the player's final score in that game.
 
